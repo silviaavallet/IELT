@@ -62,7 +62,6 @@ def save_checkpoint(config, epoch, model, max_accuracy, optimizer, lr_scheduler,
 	torch.save(save_state, save_path)
 	print("----- Saved model checkpoint to", config.data.log_path, '-----')
 
-
 def save_preds(preds, y, all_preds=None, all_label=None, ):
 	if all_preds is None:
 		all_preds = preds.clone().detach()
@@ -98,14 +97,13 @@ def load_checkpoint(config, model, optimizer=None, scheduler=None, loss_scaler=N
 			max_accuracy = checkpoint['max_accuracy']
 
 	del checkpoint
-	if torch.cuda.is_available():
-		torch.cuda.empty_cache()
+	torch.cuda.empty_cache()
 	return max_accuracy
 
 
 def eval_accuracy(all_preds, all_label, config):
 	accuracy = simple_accuracy(all_preds, all_label)
-	if config.local_rank != -1 and torch.distributed.is_initialized():
+	if config.local_rank != -1:
 		dist.barrier(device_ids=[config.local_rank])
 		val_accuracy = reduce_mean(accuracy)
 	else:
@@ -117,9 +115,7 @@ class NativeScalerWithGradNormCount:
 	state_dict_key = "amp_scaler"
 
 	def __init__(self):
-		# Use the new API for GradScaler with device specification
-		device_type = "cuda" if torch.cuda.is_available() else "cpu"
-		self._scaler = torch.amp.GradScaler(device_type)
+		self._scaler = torch.cuda.amp.GradScaler()
 
 	def __call__(self, loss, optimizer, clip_grad=None, parameters=None, create_graph=False, update_grad=True):
 		self._scaler.scale(loss).backward(create_graph=create_graph)
