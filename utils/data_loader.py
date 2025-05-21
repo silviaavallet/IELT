@@ -46,47 +46,55 @@ def build_transforms(config):
 def build_loader(config):
 	train_transform, test_transform = build_transforms(config)
 	train_set, test_set, num_classes = None, None, None
-	if config.data.dataset == 'cub':
-		root = os.path.join(config.data.data_root, 'CUB_200_2011')
-		train_set = CUB(root, True, train_transform)
-		test_set = CUB(root, False, test_transform)
-		num_classes = 200
+	#if config.data.dataset == 'cub':
+	#	root = os.path.join(config.data.data_root, 'CUB_200_2011')
+	#	train_set = CUB(root, True, train_transform)
+	#	test_set = CUB(root, False, test_transform)
+	#	num_classes = 200
+#
+	#elif config.data.dataset == 'cars':
+	#	root = os.path.join(config.data.data_root, 'cars')
+	#	train_set = Cars(root, True, train_transform)
+	#	test_set = Cars(root, False, test_transform)
+	#	num_classes = 196
+#
+	#elif config.data.dataset == 'dogs':
+	#	root = os.path.join(config.data.data_root, 'Dogs')
+	#	train_set = Dogs(root, True, train_transform)
+	#	test_set = Dogs(root, False, test_transform)
+	#	num_classes = 120
+#
+	#elif config.data.dataset == 'air':
+	#	root = config.data.data_root
+	#	train_set = Aircraft(root, True, train_transform)
+	#	test_set = Aircraft(root, False, test_transform)
+	#	num_classes = 100
+#
+	#elif config.data.dataset == 'nabirds':
+	#	root = os.path.join(config.data.data_root, 'nabirds')
+	#	train_set = NABirds(root, True, train_transform)
+	#	test_set = NABirds(root, False, test_transform)
+	#	num_classes = 555
+#
+	#elif config.data.dataset == 'pet':
+	#	root = os.path.join(config.data.data_root, 'pets')
+	#	train_set = OxfordIIITPet(root, True, train_transform)
+	#	test_set = OxfordIIITPet(root, False, test_transform)
+	#	num_classes = 37
+#
+	#elif config.data.dataset == 'flowers':
+	#	root = os.path.join(config.data.data_root, 'flowers')
+	#	train_set = OxfordFlowers(root, True, train_transform)
+	#	test_set = OxfordFlowers(root, False, test_transform)
+	#	num_classes = 102
 
-	elif config.data.dataset == 'cars':
-		root = os.path.join(config.data.data_root, 'cars')
-		train_set = Cars(root, True, train_transform)
-		test_set = Cars(root, False, test_transform)
-		num_classes = 196
-
-	elif config.data.dataset == 'dogs':
-		root = os.path.join(config.data.data_root, 'Dogs')
-		train_set = Dogs(root, True, train_transform)
-		test_set = Dogs(root, False, test_transform)
-		num_classes = 120
-
-	elif config.data.dataset == 'air':
-		root = config.data.data_root
-		train_set = Aircraft(root, True, train_transform)
-		test_set = Aircraft(root, False, test_transform)
-		num_classes = 100
-
-	elif config.data.dataset == 'nabirds':
-		root = os.path.join(config.data.data_root, 'nabirds')
-		train_set = NABirds(root, True, train_transform)
-		test_set = NABirds(root, False, test_transform)
-		num_classes = 555
-
-	elif config.data.dataset == 'pet':
-		root = os.path.join(config.data.data_root, 'pets')
-		train_set = OxfordIIITPet(root, True, train_transform)
-		test_set = OxfordIIITPet(root, False, test_transform)
-		num_classes = 37
-
-	elif config.data.dataset == 'flowers':
-		root = os.path.join(config.data.data_root, 'flowers')
-		train_set = OxfordFlowers(root, True, train_transform)
-		test_set = OxfordFlowers(root, False, test_transform)
-		num_classes = 102
+	print(config.data.dataset)
+	if config.data.dataset == 'tissue':
+		root = os.path.join(config.data.data_root, 'tissue_raw')
+		print(root)
+		train_set = Tissue(root, True, train_transform)
+		test_set = Tissue(root, False, test_transform)
+		num_classes = 8
 
 	if config.local_rank == -1:
 		train_sampler = RandomSampler(train_set)

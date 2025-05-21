@@ -12,6 +12,47 @@ from torchvision.datasets import VisionDataset
 from torchvision.datasets.folder import default_loader
 from torchvision.datasets.utils import *
 
+import os
+from torchvision.datasets import ImageFolder
+from torchvision.datasets.folder import default_loader
+
+class Tissue(ImageFolder):
+    """
+    Wraps an ImageFolder laid out like:
+
+        root/
+            train/
+                class0/
+                class1/
+                ...
+            val/
+                ...
+            test/
+                ...
+
+    and exposes the usual 'train' / 'val' / 'test' splits via a `split` arg.
+    """
+    def __init__(
+        self,
+        root: str,
+        train: bool = True,
+        transform=None,
+        target_transform=None,
+        split: str = None
+    ):
+        # pick which folder to point at
+        if split is None:
+            split = 'train' if train else 'test'
+        assert split in ('train','val','test'), "split must be 'train'|'val'|'test'"
+        data_dir = os.path.join(root, split)
+
+        # now let ImageFolder do all the heavy lifting
+        super().__init__(
+            root=data_dir,
+            transform=transform,
+            target_transform=target_transform,
+            loader=default_loader
+        )
 
 class CUB(VisionDataset):
 	"""`CUB-200-2011 <http://www.vision.caltech.edu/visipedia/CUB-200-2011.html>`_ Dataset.

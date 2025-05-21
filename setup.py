@@ -2,7 +2,7 @@ from settings.defaults import _C
 from settings.setup_functions import *
 
 config = _C.clone()
-cfg_file = os.path.join('configs', 'cub.yaml')
+cfg_file = os.path.join('configs', 'tissue.yaml')
 # cfg_file = os.path.join('..','configs', 'cub.yaml')
 config = SetupConfig(config, cfg_file)
 config.defrost()
@@ -15,8 +15,9 @@ config.misc.log_name = f'IELT'
 config.cuda_visible = '1'
 
 # Environment Settings
-config.data.log_path = os.path.join(config.misc.output, config.misc.exp_name, config.misc.log_name
-                                    + time.strftime(' %m-%d_%H-%M', time.localtime()))
+config.data.log_path = '/kaggle/working/'
+#os.path.join(config.misc.output, config.misc.exp_name, config.misc.log_name
+#                                    + time.strftime(' %m-%d_%H-%M', time.localtime()))
 
 config.model.pretrained = os.path.join(config.model.pretrained,
                                        config.model.name + config.model.pre_version + config.model.pre_suffix)
