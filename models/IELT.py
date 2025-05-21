@@ -116,10 +116,13 @@ class MultiHeadVoting(nn.Module):
 		self.num_heads = config.num_heads
 		self.vote_perhead = vote_perhead
 
+		device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+		print(f"MultiHeadVoting initializing on: {device}")
+
 		if self.fix:
 			self.kernel = torch.tensor([[1, 2, 1],
 			                            [2, 4, 2],
-			                            [1, 2, 1]], device='cuda').unsqueeze(0).unsqueeze(0).half()
+			                            [1, 2, 1]], device=device).unsqueeze(0).unsqueeze(0).half()
 			self.conv = F.conv2d
 		else:
 			self.conv = nn.Conv2d(1, 1, 3, 1, 1)
