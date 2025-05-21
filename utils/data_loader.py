@@ -90,7 +90,7 @@ def build_loader(config):
 
 	print(config.data.dataset)
 	if config.data.dataset == 'tissue':
-		root = os.path.join(config.data.data_root, 'tissue_raw')
+		root = os.path.join(config.data.data_root, 'tissue-raw')
 		print(root)
 		train_set = Tissue(root, True, train_transform)
 		test_set = Tissue(root, False, test_transform)
